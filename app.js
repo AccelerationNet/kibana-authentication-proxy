@@ -45,8 +45,8 @@ require('./lib/kibana-proxy').configure(app, config);
 run();
 
 function run() {
-  console.log('Server starting on port: ' + config.listen_port +
-              ' SSL: ' + config.enable_ssl_port ? config.listen_port_ssl : 'off');
+  // console.log('Server starting on port: ' + config.listen_port +
+  //             ' SSL: ' + config.enable_ssl_port ? config.listen_port_ssl : 'off');
   if (config.enable_ssl_port === true) {
     var options = {
       key: fs.readFileSync(config.ssl_key_file),

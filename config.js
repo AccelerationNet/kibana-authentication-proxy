@@ -81,6 +81,11 @@ module.exports =  {
   //     "server_url": "https://point-to-the-cas-server/cas"
   //   }
   //
+  // * "pam-auth": {
+  //     realm: "Kibana Authentication",
+  //     serviceName: "kibana"
+  //   }
+  //
   ////////////////////////////////////
   authenticators: { }
 
