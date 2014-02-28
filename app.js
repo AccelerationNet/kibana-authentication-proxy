@@ -13,10 +13,29 @@ var http = require('http');
 var fs = require('fs');
 
 var config = require('./config');
+
+function rmerge(a, b) {
+  for(var key in b) {
+    a[key] = b[key];
+  }
+}
+
+// some very basic argument parsing
+if(process.argv.length > 2) {
+  process.argv.slice(2).forEach(function(arg) {
+    if(arg == '--help') {
+      console.log('Usage: node app.js [config.json ...]');
+      process.exit();
+    }
+    else {
+      rmerge(config, JSON.parse(fs.readFileSync(arg)));
+    }
+  });
+}
+
+console.log('Server starting on port: ' + config.listen_port +
+            ' SSL: ' + config.enable_ssl_port ? config.listen_port_ssl : 'off');
 var app = express();
-
-console.log('Server starting...');
-
 app.use(express.cookieParser());
 app.use(express.session({ secret: config.cookie_secret }));
 
