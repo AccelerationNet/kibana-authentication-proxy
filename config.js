@@ -47,46 +47,41 @@ module.exports =  {
     "cookie_secret": "REPLACE_WITH_A_RANDOM_STRING_PLEASE",
 
 
-    ////////////////////////////////////
-    // Kibana3 Authentication Settings
-    // Currently we support 3 different auth methods: Google OAuth2, Basic Auth and CAS SSO.
-    // You can use one of them or both
-    ////////////////////////////////////
-
-
-    // =================================
-    // Google OAuth2 settings
-    // Enable? true or false
-    // When set to false, google OAuth will not be applied.
-    "enable_google_oauth": false,
-        // We use the following redirect URI:
-        // http://YOUR-KIBANA-SITE:[listen_port]/auth/google/callback
-        // Please add it in the google developers console first.
-        // The client ID of Google OAuth2
-        "client_id": "",
-        "client_secret": "",  // The client secret of Google OAuth2
-        "allowed_emails": ["*"],  // An emails list for the authorized users
-
-
-    // =================================
-    // Basic Authentication Settings
-    // The following config is different from the previous basic auth settings.
-    // It will be applied on the client who access kibana3.
-    // Enable? true or false
-    "enable_basic_auth": false,
-        // Multiple user/passwd supported
-        // The User&Passwd list for basic auth
-        "basic_auth_users": [
-            {"user": "demo1", "password": "pwd1"},
-            {"user": "demo1", "password": "pwd2"},
-        ],
-
-
-    // =================================
-    // CAS SSO Login
-    // Enable? true or false
-    "enable_cas_auth": false,
-        // Point to the CAS authentication URL
-        "cas_server_url": "https://point-to-the-cas-server/cas",
+  ////////////////////////////////////
+  // Kibana3 Authentication Settings
+  // Currently we have 3 builtin auth methods: Google OAuth2, Basic Auth and CAS SSO.
+  //  You can enable more than one or provide your own.
+  //
+  // To provide an alternate one the key in the dictionary is a file
+  // to require that provides a module with exported function
+  // configure(express, app, config);
+  //
+  // Builtin Providers:
+  //
+  // * "google-oauth2": {
+  //     // We use the following redirect URI:
+  //     // http://YOUR-KIBANA-SITE:[listen_port]/auth/google/callback
+  //     // Please add it in the google developers console first.
+  //     // The client ID of Google OAuth2
+  //     "client_id": "",
+  //     "client_secret": "",  // The client secret of Google OAuth2
+  //     "allowed_emails": ["*"]  // An emails list for the authorized users
+  //   }
+  //
+  // 
+  // * "basic-auth": {
+  //     // a list of user/password objects
+  //     "users": [
+  //       {"user": "demo1", "password": "pwd1"},
+  //       {"user": "demo1", "password": "pwd2"}
+  //     ]
+  //   }
+  //  
+  // * "cas-auth": { //CAS SSO Login
+  //     "server_url": "https://point-to-the-cas-server/cas"
+  //   }
+  //
+  ////////////////////////////////////
+  authenticators: { }
 
 };

@@ -33,29 +33,20 @@ if(process.argv.length > 2) {
   });
 }
 
-console.log('Server starting on port: ' + config.listen_port +
-            ' SSL: ' + config.enable_ssl_port ? config.listen_port_ssl : 'off');
 var app = express();
-app.use(express.cookieParser());
-app.use(express.session({ secret: config.cookie_secret }));
-
-// Authentication
-require('./lib/basic-auth').configureBasic(express, app, config);
-require('./lib/google-oauth').configureOAuth(express, app, config);
-require('./lib/cas-auth.js').configureCas(express, app, config);
+// setup and requested authentication
+require('./lib/pluggable-auth').configure(app, config);
 
 // Setup ES proxy
 require('./lib/es-proxy').configureESProxy(app, config.es_host, config.es_port,
           config.es_username, config.es_password);
-
-
 require('./lib/kibana-proxy').configure(app, config);
-
-
 
 run();
 
 function run() {
+  console.log('Server starting on port: ' + config.listen_port +
+              ' SSL: ' + config.enable_ssl_port ? config.listen_port_ssl : 'off');
   if (config.enable_ssl_port === true) {
     var options = {
       key: fs.readFileSync(config.ssl_key_file),

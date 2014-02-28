@@ -25,9 +25,8 @@ Installation
 // You may want to update the built-in kibana3 to the latest version, just run
 # cd kibana && git checkout master && git pull
 
-// Then edit config.js, make sure you have everything checked in the config file
-// and run!
-# node app.js
+// Then edit config.js (or provide an alternate config.json)  and run!
+# node app.js [config.json ...]
 ```
 
 Configuration
@@ -56,11 +55,37 @@ All settings are placed in /config.js, hack it as you go.
 
 ### Client authentication settings
 
-We currently support 3 auth methods: Google OAuth2, BasicAuth and CAS, you can use one of them or all of them. it depends on the configuration you have.
+** Important**: The syntax for this has changed in version 2.
+
+We currently support 3 builtin auth methods: Google OAuth2, BasicAuth
+and CAS, you can use one or all of them.
+
+All configuration is done by setting the `authenticators` dict in the
+configuration.
+
+Custom authentication providers can be configured by specifying the
+module path as the key and any config that should be provided as its
+value. That module will be called with
+
+    configure(express, app, config);
+
+E.g.
+
+    authenticators: {
+      "google-oauth2": {
+        "client_id": "",
+        "client_secret": "",
+        "allowed_emails": []
+      },
+      "/opt/custom-provider": {
+        "info1": "secret"
+      }
+    }
 
 ***1. Google OAuth2***
 
-- ``enable_google_oauth``: *Enable or not?*
+Key: `google-oauth2`.
+
 - ``client_id``:  *The client ID of Google OAuth2, leave empty if you don't want to use it*
 - ``client_secret``: *The client secret of Google OAuth2*
 - ``allowed_emails``: *An emails list for the authorized users, should like `["a@b.com", "*@b.com", "*"]`*. All google users in the list will be allowed to access kibana.
@@ -71,13 +96,15 @@ Google OAuth2 needs authorized redirect URIs for your app, please add it first a
 
 ***2. Basic Authentication***
 
-- ``enable_basic_auth``: *Enable or not?*
-- ``basic_auth_users``:  *A list of user/passwd, see the comments in config.js for help. leave empty if you won't use it*
+Key: `basic-auth`.
+
+- ``users``:  *A list of user/passwd, see the comments in config.js for help. leave empty if you won't use it*
 
 ***3. CAS Auth***
 
-- ``enable_cas_auth``: *Enable or not?*
-- ``cas_server_url``: *Point to the CAS server URL*
+Key: `cas-auth`
+
+- ``server_url``: *Point to the CAS server URL*
 
 Resources
 =========
